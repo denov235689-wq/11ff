@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PayUz - Pul o'tkazmalari</title>
+    <style>
+        /* ===== GLOBAL ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #0c1a2b, #1a2f44);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* ===== ASOSIY KONTEYNER ===== */
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 32px 26px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            transition: 0.3s;
+        }
+
+        /* ===== LOGO ===== */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #0c1a2b;
+            box-shadow: 0 6px 16px rgba(251, 191, 36, 0.3);
+        }
+
+        .logo h1 {
+            color: #fff;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #fbbf24;
+        }
+
+        .logo small {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 12px;
+            font-weight: 400;
+            margin-left: auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        /* ===== PANELLAR ===== */
+        .panel {
+            display: none;
+            animation: fadeSlide 0.35s ease forwards;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        @keyframes fadeSlide {
+            0% { opacity: 0; transform: translateY(12px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== INPUTLAR ===== */
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            display: block;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        .input-group label .req {
+            color: #f87171;
+        }
+
+        .input-wrap {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 0 16px;
+            transition: 0.25s;
+        }
+
+        .input-wrap:focus-within {
+            border-color: #fbbf24;
+            box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.08);
+        }
+
+        .input-wrap .icon {
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 18px;
+            margin-right: 12px;
+        }
+
+        .input-wrap input {
+            width: 100%;
+            padding: 14px 0;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .input-wrap input::placeholder {
+            color: rgba(255, 255, 255, 0.15);
+            font-weight: 400;
+        }
+
+        .input-wrap input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        .input-wrap input[type="number"]::-webkit-outer-spin-button,
+        .input-wrap input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
+        /* ===== TUGMALAR ===== */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.25s;
+            letter-spacing: 0.3px;
+            margin-top: 6px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0c1a2b;
+            box-shadow: 0 6px 20px rgba(251, 191, 36, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.35);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-danger:hover {
+            transform: scale(1.02);
+        }
+
+        .btn-small {
+            padding: 10px 18px;
+            width: auto;
+            font-size: 14px;
+            border-radius: 14px;
+            margin-top: 0;
+        }
+
+        /* ===== BALANS KO'RSATGICHI ===== */
+        .balance-card {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(251, 191, 36, 0.02));
+            border-radius: 24px;
+            padding: 22px 24px;
+            margin-bottom: 28px;
+            border: 1px solid rgba(251, 191, 36, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.05), transparent);
+            border-radius: 50%;
+        }
+
+        .balance-label {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .balance-amount {
+            color: #fff;
+            font-size: 36px;
+            font-weight: 700;
+            margin-top: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .balance-amount .currency {
+            color: #fbbf24;
+            font-size: 22px;
+            margin-right: 4px;
+        }
+
+        .balance-sub {
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        /* ===== KARTA MA'LUMOTI ===== */
+        .card-preview {
+            background: linear-gradient(145deg, #1e3a5f, #152b44);
+            border-radius: 20px;
+            padding: 20px 22px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-preview .card-number {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .card-preview .card-number span {
+            color: #fff;
+        }
+
+        .card-preview .card-badge {
+            background: rgba(251, 191, 36, 0.12);
+            color: #fbbf24;
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* ===== TRANSFER FORM ===== */
+        .transfer-form .input-group:last-of-type {
+            margin-bottom: 20px;
+        }
+
+        .fee-info {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .fee-info .label {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 14px;
+        }
+
+        .fee-info .value {
+            color: #fbbf24;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        /* ===== RO'YXAT ===== */
+        .history-list {
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .history-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+        }
+        .history-list::-webkit-scrollbar-thumb {
+            background: rgba(251, 191, 36, 0.3);
+            border-radius: 10px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            transition: 0.2s;
+        }
+
+        .history-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .history-item .info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .history-item .info .to {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .history-item .info .date {
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 11px;
+        }
+
+        .history-item .amounts {
+            text-align: right;
+        }
+
+        .history-item .amounts .sent {
+            color: #f87171;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .history-item .amounts .fee {
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 11px;
+        }
+
+        /* ===== TOGGLE ===== */
+        .auth-toggle {
+            text-align: center;
+            margin-top: 18px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 14px;
+        }
+
+        .auth-toggle a {
+            color: #fbbf24;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .auth-toggle a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .top-bar .user {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+
+        .top-bar .user strong {
+            color: #fff;
+        }
+
+        .top-bar .logout-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: rgba(255, 255, 255, 0.3);
+            padding: 6px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .top-bar .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 420px) {
+            .app-container {
+                padding: 22px 16px;
+                border-radius: 28px;
+            }
+            .balance-amount {
+                font-size: 28px;
+            }
+            .logo h1 {
+                font-size: 20px;
+            }
+            .card-preview {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .btn {
+                font-size: 15px;
+                padding: 14px;
+            }
+        }
+
+        /* ===== HIDE ===== */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container" id="app">
+
+    <!-- ===== LOGO ===== -->
+    <div class="logo">
+        <div class="logo-icon">P</div>
+        <h1>Pay<span>Uz</span></h1>
+        <small>⚡ 11%</small>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- ===== PANEL 1: KIRISH / RO'YXAT ===== -->
+    <!-- ============================================ -->
+    <div class="panel active" id="authPanel">
+        <div id="loginForm">
+            <div class="input-group">
+                <label>Telefon yoki Login <span class="req">*</span></label>
+                <div class="input-wrap">
+                    <span class="icon">👤</span>
+                    <input type="text" id="loginInput" placeholder="+998 90 123 45 67" value="user" />
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Parol <span class="req">*</span></label>
+                <div class="input-wrap">
+                    <span class="icon">🔒</span>
+                    <input type="password" id="passwordInput" placeholder="••••••••" value="1234" />
+                </div>
+            </div>
+            <button class="btn btn-primary" id="loginBtn">🚀 Kirish</button>
+            <div class="auth-toggle">
+                Hisobingiz yo‘qmi? <a id="showRegister">Ro‘yxatdan o‘tish</a>
+            </div>
+        </div>
+
+        <div id="registerForm" class="hidden">
+            <div class="input-group">
+                <label>Ismingiz <span class="req">*</span></label>
+                <div class="input-wrap">
+                    <span class="icon">🧑</span>
+                    <input type="text" id="regName" placeholder="Alisher" value="Alisher" />
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Login <span class="req">*</span></label>
+                <div class="input-wrap">
+                    <span class="icon">👤</span>
+                    <input type="text" id="regLogin" placeholder="alisher_007" value="alisher" />
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Parol <span class="req">*</span></label>
+                <div class="input-wrap">
+                    <span class="icon">🔒</span>
+                    <input type="password" id="regPassword" placeholder="••••••••" value="1234" />
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Karta raqami (16 raqam)</label>
+                <div class="input-wrap">
+                    <span class="icon">💳</span>
+                    <input type="text" id="regCard" placeholder="8600 1234 5678 9012" value="8600123456789012" maxlength="16" />
+                </div>
+            </div>
+            <button class="btn btn-primary" id="registerBtn">✅ Ro‘yxatdan o‘tish</button>
+            <div class="auth-toggle">
+                Akkauntingiz bormi? <a id="showLogin">Kirish</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- ===== PANEL 2: ASOSIY (PUL O'TKAZMA) ===== -->
+    <!-- ============================================ -->
+    <div class="panel" id="mainPanel">
+
+        <!-- Top bar -->
+        <div class="top-bar">
+            <div class="user">👋 Xush kelibsiz, <strong id="userNameDisplay">User</strong></div>
+            <button class="logout-btn" id="logoutBtn">🚪 Chiqish</button>
+        </div>
+
+        <!-- Balans -->
+        <div class="balance-card">
+            <div class="balance-label">💰 Joriy balans</div>
+            <div class="balance-amount">
+                <span class="currency">UZS</span>
+                <span id="balanceDisplay">0</span>
+            </div>
+            <div class="balance-sub">📌 Karta: <span id="userCardDisplay">****</span></div>
+        </div>
+
+        <!-- Karta ma'lumoti -->
+        <div class="card-preview">
+            <div class="card-number">
+                💳 Karta: <span id="cardNumberDisplay">8600 **** **** 9012</span>
+            </div>
+            <div class="card-badge">🔵 Faol</div>
+        </div>
+
+        <!-- Pul o'tkazma formasi -->
+        <div class="transfer-form">
+            <div class="input-group">
+                <label>Qabul qiluvchi kartasi</label>
+                <div class="input-wrap">
+                    <span class="icon">💳</span>
+                    <input type="text" id="recipientCard" placeholder="8600 0000 0000 0000" />
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Summa (so‘m)</label>
+                <div class="input-wrap">
+                    <span class="icon">💵</span>
+                    <input type="number" id="transferAmount" placeholder="Masalan: 100000" />
+                </div>
+            </div>
+
+            <!-- Komissiya haqida -->
+            <div class="fee-info">
+                <span class="label">⚡ Komissiya (11%)</span>
+                <span class="value" id="feeDisplay">0 so‘m</span>
+            </div>
+
+            <button class="btn btn-primary" id="transferBtn">📤 Pul o‘tkazish</button>
+        </div>
+
+        <!-- Tarix -->
+        <div style="margin-top: 28px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <span style="color:rgba(255,255,255,0.4); font-size:14px; font-weight:500;">📋 O‘tkazmalar tarixi</span>
+                <span style="color:rgba(255,255,255,0.1); font-size:12px;" id="historyCount">0 ta</span>
+            </div>
+            <div class="history-list" id="historyList">
+                <div style="text-align:center; color:rgba(255,255,255,0.08); padding:30px 0; font-size:14px;">
+                    Hali hech qanday o‘tkazma yo‘q
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ================================================
+        // 1. MA'LUMOTLAR BAZASI (localStorage bilan ishlaydi)
+        // ================================================
+        let users = [];
+        let currentUser = null;
+        let transactions = [];
+
+        // YUKLASH
+        function loadData() {
+            try {
+                const savedUsers = localStorage.getItem('payuz_users');
+                if (savedUsers) users = JSON.parse(savedUsers);
+                else {
+                    // Default user
+                    users = [{
+                        id: 'user_1',
+                        name: 'Alisher',
+                        login: 'user',
+                        password: '1234',
+                        card: '8600123456789012',
+                        balance: 5000000
+                    }];
+                    saveUsers();
+                }
+
+                const savedTrans = localStorage.getItem('payuz_transactions');
+                if (savedTrans) transactions = JSON.parse(savedTrans);
+                else transactions = [];
+
+                const savedSession = localStorage.getItem('payuz_session');
+                if (savedSession) {
+                    const sessionData = JSON.parse(savedSession);
+                    const found = users.find(u => u.id === sessionData.userId);
+                    if (found) {
+                        currentUser = found;
+                    }
+                }
+            } catch (e) {
+                console.warn('Ma\'lumot yuklashda xatolik:', e);
+            }
+        }
+
+        function saveUsers() {
+            localStorage.setItem('payuz_users', JSON.stringify(users));
+        }
+
+        function saveTransactions() {
+            localStorage.setItem('payuz_transactions', JSON.stringify(transactions));
+        }
+
+        function saveSession() {
+            if (currentUser) {
+                localStorage.setItem('payuz_session', JSON.stringify({ userId: currentUser.id }));
+            } else {
+                localStorage.removeItem('payuz_session');
+            }
+        }
+
+        // ================================================
+        // 2. UI ELEMENTLAR
+        // ================================================
+        const authPanel = document.getElementById('authPanel');
+        const mainPanel = document.getElementById('mainPanel');
+
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+
+        const loginInput = document.getElementById('loginInput');
+        const passwordInput = document.getElementById('passwordInput');
+        const loginBtn = document.getElementById('loginBtn');
+
+        const regName = document.getElementById('regName');
+        const regLogin = document.getElementById('regLogin');
+        const regPassword = document.getElementById('regPassword');
+        const regCard = document.getElementById('regCard');
+        const registerBtn = document.getElementById('registerBtn');
+
+        const showRegister = document.getElementById('showRegister');
+        const showLogin = document.getElementById('showLogin');
+
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        const userNameDisplay = document.getElementById('userNameDisplay');
+        const balanceDisplay = document.getElementById('balanceDisplay');
+        const userCardDisplay = document.getElementById('userCardDisplay');
+        const cardNumberDisplay = document.getElementById('cardNumberDisplay');
+
+        const recipientCard = document.getElementById('recipientCard');
+        const transferAmount = document.getElementById('transferAmount');
+        const feeDisplay = document.getElementById('feeDisplay');
+        const transferBtn = document.getElementById('transferBtn');
+
+        const historyList = document.getElementById('historyList');
+        const historyCount = document.getElementById('historyCount');
+
+        // ================================================
+        // 3. YORDAMCHI FUNKSIYALAR
+        // ================================================
+        function formatMoney(amount) {
+            return Math.round(amount).toLocaleString('uz-UZ');
+        }
+
+        function maskCard(card) {
+            if (!card || card.length < 16) return '**** **** **** ****';
+            return card.slice(0, 4) + ' **** **** ' + card.slice(-4);
+        }
+
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substring(2, 6);
+        }
+
+        function getCurrentTime() {
+            return new Date().toLocaleString('uz-UZ', {
+                day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
+            });
+        }
+
+        // ================================================
+        // 4. PANEL BOSHQARISH
+        // ================================================
+        function showPanel(panelName) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            if (panelName === 'auth') {
+                authPanel.classList.add('active');
+            } else {
+                mainPanel.classList.add('active');
+            }
+        }
+
+        function updateUI() {
+            if (!currentUser) {
+                showPanel('auth');
+                return;
+            }
+
+            showPanel('main');
+            userNameDisplay.textContent = currentUser.name || 'User';
+            balanceDisplay.textContent = formatMoney(currentUser.balance);
+            const masked = maskCard(currentUser.card);
+            userCardDisplay.textContent = masked;
+            cardNumberDisplay.textContent = masked;
+
+            // Tarixni yangilash
+            renderHistory();
+
+            // Komissiyani hisoblash
+            updateFee();
+        }
+
+        // ================================================
+        // 5. KOMISSIYA
+        // ================================================
+        function updateFee() {
+            const amount = parseFloat(transferAmount.value);
+            if (isNaN(amount) || amount <= 0) {
+                feeDisplay.textContent = '0 so‘m';
+                return;
+            }
+            const fee = amount * 0.11;
+            feeDisplay.textContent = formatMoney(fee) + ' so‘m';
+        }
+
+        transferAmount.addEventListener('input', updateFee);
+
+        // ================================================
+        // 6. TARIX
+        // ================================================
+        function renderHistory() {
+            const userTrans = transactions.filter(t => t.userId === currentUser.id);
+            historyCount.textContent = userTrans.length + ' ta';
+
+            if (userTrans.length === 0) {
+                historyList.innerHTML = `
+                    <div style="text-align:center; color:rgba(255,255,255,0.08); padding:30px 0; font-size:14px;">
+                        Hali hech qanday o‘tkazma yo‘q
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            // Eng oxirgisi tepada
+            const reversed = [...userTrans].reverse();
+            for (const t of reversed) {
+                html += `
+                    <div class="history-item">
+                        <div class="info">
+                            <div class="to">➜ Karta: ${maskCard(t.toCard)}</div>
+                            <div class="date">${t.date || 'Hozir'}</div>
+                        </div>
+                        <div class="amounts">
+                            <div class="sent">- ${formatMoney(t.amount)} so‘m</div>
+                            <div class="fee">Komissiya: ${formatMoney(t.fee)} so‘m</div>
+                        </div>
+                    </div>
+                `;
+            }
+            historyList.innerHTML = html;
+        }
+
+        // ================================================
+        // 7. AUTH (KIRISH / RO'YXAT)
+        // ================================================
+        function handleLogin() {
+            const login = loginInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!login || !password) {
+                alert('Iltimos, login va parolni kiriting!');
+                return;
+            }
+
+            const user = users.find(u => u.login === login && u.password === password);
+            if (!user) {
+                alert('❌ Login yoki parol noto‘g‘ri!');
+                return;
+            }
+
+            currentUser = user;
+            saveSession();
+            updateUI();
+        }
+
+        function handleRegister() {
+            const name = regName.value.trim();
+            const login = regLogin.value.trim();
+            const password = regPassword.value.trim();
+            const card = regCard.value.trim().replace(/\s/g, '');
+
+            if (!name || !login || !password) {
+                alert('Iltimos, barcha maydonlarni to‘ldiring!');
+                return;
+            }
+
+            if (card.length !== 16 || !/^\d{16}$/.test(card)) {
+                alert('Karta raqami 16 ta raqamdan iborat bo‘lishi kerak!');
+                return;
+            }
+
+            if (users.find(u => u.login === login)) {
+                alert('❌ Bu login allaqachon band!');
+                return;
+            }
+
+            const newUser = {
+                id: generateId(),
+                name: name,
+                login: login,
+                password: password,
+                card: card,
+                balance: 1000000 // Yangi foydalanuvchiga 1 mln bonus
+            };
+
+            users.push(newUser);
+            saveUsers();
+
+            alert('✅ Ro‘yxatdan o‘tdingiz! Endi tizimga kiring.');
+            // Login formaga o‘tish
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            loginInput.value = login;
+            passwordInput.value = password;
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            saveSession();
+            updateUI();
+            // Inputlarni tozalash
+            loginInput.value = '';
+            passwordInput.value = '';
+        }
+
+        // ================================================
+        // 8. PUL O'TKAZISH
+        // ================================================
+        function handleTransfer() {
+            if (!currentUser) {
+                alert('Iltimos, tizimga kiring!');
+                return;
+            }
+
+            const toCard = recipientCard.value.trim().replace(/\s/g, '');
+            const amount = parseFloat(transferAmount.value);
+
+            // Validatsiya
+            if (!toCard || toCard.length !== 16 || !/^\d{16}$/.test(toCard)) {
+                alert('❌ Qabul qiluvchi kartasi 16 raqam bo‘lishi kerak!');
+                return;
+            }
+
+            if (isNaN(amount) || amount <= 0) {
+                alert('❌ Iltimos, to‘g‘ri summa kiriting!');
+                return;
+            }
+
+            // O'z kartasiga o'tkazishni oldini olish
+            if (toCard === currentUser.card) {
+                alert('❌ O‘zingizga o‘tkazib bo‘lmaydi!');
+                return;
+            }
+
+            const fee = amount * 0.11;
+            const total = amount + fee;
+
+            if (total > currentUser.balance) {
+                alert(`❌ Yetarli mablag‘ yo‘q! Kerak: ${formatMoney(total)} so‘m, Balans: ${formatMoney(currentUser.balance)} so‘m`);
+                return;
+            }
+
+            // Qabul qiluvchini topish
+            const receiver = users.find(u => u.card === toCard);
+            if (!receiver) {
+                alert('❌ Bu karta tizimda ro‘yxatdan o‘tmagan!');
+                return;
+            }
+
+            // Agar qabul qiluvchi o'zi bo'lsa (yuqorida tekshirilgan, lekin qo'shimcha)
+            if (receiver.id === currentUser.id) {
+                alert('❌ O‘zingizga o‘tkazib bo‘lmaydi!');
+                return;
+            }
+
+            // Pul o'tkazish
+            currentUser.balance -= total;
+            receiver.balance += amount;
+
+            // Tranzaksiyani saqlash
+            const transaction = {
+                id: generateId(),
+                userId: currentUser.id,
+                toCard: toCard,
+                toUserId: receiver.id,
+                amount: amount,
+                fee: fee,
+                total: total,
+                date: getCurrentTime()
+            };
+            transactions.push(transaction);
+
+            // Foydalanuvchilarni yangilash
+            const senderIndex = users.findIndex(u => u.id === currentUser.id);
+            const receiverIndex = users.findIndex(u => u.id === receiver.id);
+            if (senderIndex !== -1) users[senderIndex] = currentUser;
+            if (receiverIndex !== -1) users[receiverIndex] = receiver;
+
+            saveUsers();
+            saveTransactions();
+
+            // UI yangilash
+            updateUI();
+            transferAmount.value = '';
+            recipientCard.value = '';
+            feeDisplay.textContent = '0 so‘m';
+
+            // Qabul qiluvchiga xabar
+            alert(`✅ ${formatMoney(amount)} so‘m muvaffaqiyatli o‘tkazildi!\nKomissiya: ${formatMoney(fee)} so‘m (11%)`);
+        }
+
+        // ================================================
+        // 9. EVENTLAR
+        // ================================================
+        loginBtn.addEventListener('click', handleLogin);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !loginForm.classList.contains('hidden')) {
+                handleLogin();
+            }
+        });
+
+        registerBtn.addEventListener('click', handleRegister);
+
+        showRegister.addEventListener('click', () => {
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+        });
+
+        showLogin.addEventListener('click', () => {
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        });
+
+        logoutBtn.addEventListener('click', handleLogout);
+
+        transferBtn.addEventListener('click', handleTransfer);
+
+        // Enter bilan o'tkazish
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && mainPanel.classList.contains('active')) {
+                const active = document.activeElement;
+                if (active === recipientCard || active === transferAmount) {
+                    e.preventDefault();
+                    handleTransfer();
+                }
+            }
+        });
+
+        // Karta raqamini formatlash (faqat raqamlar)
+        regCard.addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '');
+        });
+
+        recipientCard.addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '');
+        });
+
+        // ================================================
+        // 10. BOSHLASH
+        // ================================================
+        loadData();
+        updateUI();
+
+        // Agar currentUser bo'lmasa, auth panel ko'rinadi
+        if (!currentUser) {
+            showPanel('auth');
+            loginForm.classList.remove('hidden');
+            registerForm.classList.add('hidden');
+        } else {
+            showPanel('main');
+        }
+
+        console.log('💳 PayUz tizimi ishga tushdi!');
+        console.log('👤 Foydalanuvchilar:', users);
+        console.log('📋 Tranzaksiyalar:', transactions);
+    })();
+</script>
+
+</body>
+</html>
